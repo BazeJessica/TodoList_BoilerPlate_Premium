@@ -1,18 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do App</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div id="app">
-    <h1>Ma To-Do List</h1>
-    <input type="text" id="taskInput" placeholder="Nouvelle tâche">
-    <button id="addTaskBtn">Ajouter</button>
-    <ul id="taskList"></ul>
-  </div>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <h1>Ma To-Do List</h1>
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Dark Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </header>
+
+      <div class="input-group">
+        <input type="text" id="taskInput" placeholder="Nouvelle tâche" />
+        <button id="addTaskBtn" class="primary-btn">Ajouter</button>
+      </div>
+
+      <div class="controls-container">
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">Toutes</button>
+          <button class="filter-btn" data-filter="active">Actives</button>
+          <button class="filter-btn" data-filter="completed">Terminées</button>
+        </div>
+        <div class="sorting">
+          <select id="sortSelect" class="sort-select">
+            <option value="asc">Plus ancien</option>
+            <option value="desc">Plus récent</option>
+          </select>
+        </div>
+      </div>
+      <div class="list-container">
+        <ul id="taskList">
+          <!-- Loader during API call -->
+          <div id="loader" class="loader" style="display: none">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+        </ul>
+      </div>
+    </div>
+    
+    <script src="script.js"></script>
+  </body>
 </html>
