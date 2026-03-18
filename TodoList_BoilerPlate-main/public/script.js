@@ -109,3 +109,92 @@ const deleteTask = async (id) => {
     setTimeout(() => renderTasks(), 300); // Wait for animation
   }
 };
+
+// View processing (Filtering & Sorting)
+const getProcessedTasks = () => {
+  let processed = [...tasks];
+
+  // Apply Filter
+  if (currentFilter === 'active') {
+    processed = processed.filter(t => !t.completed);
+  } else if (currentFilter === 'completed') {
+    processed = processed.filter(t => t.completed);
+  }
+
+  // Apply Sort (Using 'id' which is Date.now())
+  processed.sort((a, b) => {
+    return currentSort === 'asc' ? a.id - b.id : b.id - a.id;
+  });
+
+  return processed;
+};
+
+
+// Render Tasks to DOM
+const renderTasks = () => {
+  taskList.innerHTML = '';
+  const processedTasks = getProcessedTasks();
+
+  if (processedTasks.length === 0) {
+    taskList.innerHTML = `<div class="empty-state">Aucune tâche trouvée</div>`;
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  
+  processedTasks.forEach(task => {
+    const li = document.createElement('li');
+    li.setAttribute('data-id', task.id);
+    if (task.completed) li.classList.add('completed');
+
+    li.innerHTML = `
+      <div class="task-content">
+        <button class="check-btn" aria-label="Toggle status" onclick="toggleTask(${task.id}, ${task.completed})">
+          <i class="fas fa-check"></i>
+        </button>
+        <span class="task-text">${escapeHTML(task.name)}</span>
+      </div>
+      <div class="actions">
+        <button class="delete-btn" aria-label="Delete task" onclick="deleteTask(${task.id})">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    `;
+    fragment.appendChild(li);
+  });
+
+  taskList.appendChild(fragment);
+};
+
+// Helper: Escape HTML to prevent XSS
+const escapeHTML = (str) => {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+};
+
+// Event Listeners
+addTaskBtn.addEventListener('click', addTask);
+taskInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') addTask();
+});
+
+themeToggle.addEventListener('click', toggleTheme);
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentFilter = e.target.getAttribute('data-filter');
+    renderTasks();
+  });
+});
+
+sortSelect.addEventListener('change', (e) => {
+  currentSort = e.target.value;
+  renderTasks();
+});
+
+// Initialization
+initTheme();
+fetchTasks();
