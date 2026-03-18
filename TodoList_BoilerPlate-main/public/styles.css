@@ -270,7 +270,6 @@ li.completed .check-btn {
   background: rgba(238, 93, 80, 0.1);
 }
 
-/* Animations */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -296,7 +295,6 @@ li.completed .check-btn {
   font-size: 24px;
 }
 
-/* Empty state */
 .empty-state {
   text-align: center;
   color: var(--text-secondary);
